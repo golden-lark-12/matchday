@@ -37,12 +37,21 @@ export const TeamBadge = component({
     short: prop.text({ label: "Short code", required: true }),
     founded: prop.number({ label: "Founded year", integer: true, min: 1800, max: 2100, default: 1904 }),
     color: prop.color({ label: "Club colour", default: "#14532d" }),
+    layout: prop.choice(["row", "stacked"] as const, { label: "Layout", default: "row" }),
+    align: prop.choice(["start", "center", "end"] as const, { label: "Alignment", default: "start" }),
   },
-  render: ({ name, short, founded, color }) => (
-    <Row stackOnMobile={false} style={{ gap: 12, alignItems: "center" }}>
+  render: ({ name, short, founded, color, layout, align }) => {
+    // Fixed badge width (padding + ~18px per condensed capital): the email
+    // renderer gives an end-justified Row a full-width cell, so an
+    // unconstrained badge Text stretches into a full-width bar. A fixed
+    // width keeps the badge a badge on every root. 18px/char leaves room
+    // for the wider fallback font when Barlow Condensed does not load.
+    const badgeWidth = 20 + short.length * 18;
+    const badge = (
       <Text
         style={{
-          flex: "none",
+          ...(layout === "row" ? { flex: "none" as const } : {}),
+          width: badgeWidth,
           fontFamily: FONTS.heading,
           fontWeight: 700,
           fontSize: 22,
@@ -55,14 +64,35 @@ export const TeamBadge = component({
       >
         {short}
       </Text>
-      <Column style={{ gap: 2 }}>
-        <Text style={{ fontWeight: 700, fontSize: 15, lineHeight: 1.2 }}>{name}</Text>
+    );
+    const nameBlock = (
+      <Column style={{ gap: 2, alignItems: align }}>
+        <Text style={{ fontWeight: 700, fontSize: 15, lineHeight: 1.2, textAlign: align === "end" ? "right" : align === "center" ? "center" : "left" }}>{name}</Text>
         <Text style={{ fontFamily: FONTS.mono, fontSize: 10, letterSpacing: 1.2, color: token("colors.muted") }}>
           EST. {founded}
         </Text>
       </Column>
-    </Row>
-  ),
+    );
+    // Stacked (badge over name) is the email-safe form: a Row of two Texts
+    // inside a 210px email column collapses the name cell to one character
+    // wide (word-break breaks every letter). The stacked form has no Row.
+    if (layout === "stacked") {
+      return (
+        <Column style={{ gap: 8, alignItems: align }}>
+          <Row style={{ justifyContent: align === "end" ? "end" : align === "center" ? "center" : "start" }}>
+            {badge}
+          </Row>
+          {nameBlock}
+        </Column>
+      );
+    }
+    return (
+      <Row stackOnMobile={false} style={{ gap: 12, alignItems: "center" }}>
+        {badge}
+        {nameBlock}
+      </Row>
+    );
+  },
 });
 
 /** The score, big: two names and the numbers between them. */
@@ -262,7 +292,7 @@ export function PitchSvg({
       <Rect x={0} y={0} width={width} height={height} style={{ fill: pitch }} />
       <Rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} style={{ fill: pitch, stroke: line, strokeWidth: 2 }} />
       <Line x1={x0} y1={midY} x2={x1} y2={midY} style={{ stroke: line, strokeWidth: 2 }} />
-      <Circle cx={width / 2} cy={midY} r={110} style={{ fill: pitch, stroke: line, strokeWidth: 2 }} />
+      <Circle cx={width / 2} cy={midY} r={84} style={{ fill: pitch, stroke: line, strokeWidth: 2 }} />
       <Circle cx={width / 2} cy={midY} r={6} style={{ fill: line }} />
       <Rect x={width / 2 - boxW / 2} y={y0} width={boxW} height={boxH} style={{ fill: pitch, stroke: line, strokeWidth: 2 }} />
       <Rect x={width / 2 - boxW / 2} y={y1 - boxH} width={boxW} height={boxH} style={{ fill: pitch, stroke: line, strokeWidth: 2 }} />

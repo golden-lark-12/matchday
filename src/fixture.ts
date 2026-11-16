@@ -83,6 +83,8 @@ export interface Fixture {
   scorers: { name: string; team: string; goals: number }[];
   form: string[];
   nextFixture: string;
+  /** The next home game — the match centre's ticket band sells this one. */
+  nextHomeFixture: string;
   /** The rest of the league's fixtures this matchday. */
   otherFixtures: string[];
 }
@@ -186,6 +188,8 @@ export const FIXTURE: Fixture = {
   ],
   form: ["W", "W", "D", "W", "W"],
   nextFixture: "Kestrel Town (away) — Saturday 5 December 2026, 15:00",
+  /** The next home game — the match centre's ticket band sells this one. */
+  nextHomeFixture: "Ashford Vale (home) — Saturday 12 December 2026, 15:00",
   otherFixtures: [
     "Kestrel Town v Ashford Vale — Saturday 28 November, 15:00",
     "Millfield Athletic v Harbour Town — Saturday 28 November, 15:00",

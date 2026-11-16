@@ -120,19 +120,19 @@ export default function ProgrammeDoc({ fixture = FIXTURE }: { fixture?: Fixture 
         </Column>
         <Column style={{ gap: 14, padding: [26, 8, 0] }}>
           <Text style={{ apply: ["label"] }}>How they line up — {home.formation}</Text>
-          <Svg width={491} height={190} title={`A football pitch seen from above, with the ${home.name} starting eleven as dots in a ${home.formation}.`}>
-            <Rect x={0} y={0} width={491} height={190} style={{ fill: "#1e6b41" }} />
-            <Rect x={2} y={2} width={487} height={186} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
-            <Line x1={245.5} y1={2} x2={245.5} y2={188} style={{ stroke: "#ffffff", strokeWidth: 2 }} />
-            <Circle cx={245.5} cy={95} r={32} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
-            <Rect x={2} y={55} width={52} height={80} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
-            <Rect x={437} y={55} width={52} height={80} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
+          <Svg width={491} height={240} title={`A football pitch seen from above, with the ${home.name} starting eleven as dots in a ${home.formation}.`}>
+            <Rect x={0} y={0} width={491} height={240} style={{ fill: "#1e6b41" }} />
+            <Rect x={2} y={2} width={487} height={236} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
+            <Line x1={245.5} y1={2} x2={245.5} y2={238} style={{ stroke: "#ffffff", strokeWidth: 2 }} />
+            <Circle cx={245.5} cy={120} r={40} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
+            <Rect x={2} y={80} width={52} height={80} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
+            <Rect x={437} y={80} width={52} height={80} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
             {(() => {
               const lines = formationLines(home);
               const xs = [48, 150, 262, 384];
               return lines.flatMap((line, li) =>
                 line.map((player, i) => {
-                  const y = line.length === 1 ? 95 : 32 + (i * (190 - 64)) / (line.length - 1);
+                  const y = line.length === 1 ? 120 : 40 + (i * (240 - 80)) / (line.length - 1);
                   return <Circle key={player.number} cx={xs[li]} cy={y} r={8} style={{ fill: "#ffffff" }} />;
                 }),
               );
@@ -143,6 +143,14 @@ export default function ProgrammeDoc({ fixture = FIXTURE }: { fixture?: Fixture 
             the top of the table. Official programme · £3.00 · Inside: the manager's notes, both
             starting line-ups and the league table.
           </Text>
+        </Column>
+        <Column style={{ gap: 10, padding: [22, 8, 0] }}>
+          <Text style={{ apply: ["label"] }}>Also this matchday</Text>
+          <List style={{ gap: 6, fontSize: 13.5, lineHeight: 1.5 }}>
+            {fixture.otherFixtures.map((f) => (
+              <ListItem key={f}>{f}</ListItem>
+            ))}
+          </List>
         </Column>
       </Document.Page>
 
@@ -184,6 +192,14 @@ export default function ProgrammeDoc({ fixture = FIXTURE }: { fixture?: Fixture 
             from a dead ball. Seabrook will know his name by half-time.
           </Text>
         </Column>
+        <Column style={{ gap: 10 }}>
+          <Text style={{ apply: ["label"] }}>Matchday information</Text>
+          <List style={{ gap: 6, fontSize: 13.5, lineHeight: 1.5 }}>
+            <ListItem>Gates open at 13:30. Arrive by 14:30 to catch the teams warming up.</ListItem>
+            <ListItem>Tram: the Dockside line to {fixture.venue} Halt — four minutes on foot from the stop.</ListItem>
+            <ListItem>Bring photo ID that matches the name on your ticket.</ListItem>
+          </List>
+        </Column>
       </Document.Page>
 
       {/* Page 3 — line-ups. */}
@@ -193,8 +209,20 @@ export default function ProgrammeDoc({ fixture = FIXTURE }: { fixture?: Fixture 
           <Heading level={2}>Starting line-ups</Heading>
         </Column>
         <Lineup team={home.name} formation={home.formation} rows={lineupRowsText(home)} color={home.color} />
+        <Column style={{ gap: 6 }}>
+          <Text style={{ apply: ["label"] }}>Substitutes</Text>
+          <Text style={{ fontSize: 13.5, lineHeight: 1.55 }}>
+            {home.subs.map((p) => `${p.number} ${p.name}`).join(" · ")}
+          </Text>
+        </Column>
         <Divider />
         <Lineup team={away.name} formation={away.formation} rows={lineupRowsText(away)} color={away.color} />
+        <Column style={{ gap: 6 }}>
+          <Text style={{ apply: ["label"] }}>Substitutes</Text>
+          <Text style={{ fontSize: 13.5, lineHeight: 1.55 }}>
+            {away.subs.map((p) => `${p.number} ${p.name}`).join(" · ")}
+          </Text>
+        </Column>
         <Column style={{ gap: 10 }}>
           <Text style={{ apply: ["label"] }}>Officials</Text>
           <Table style={{ rowBorder: `1px solid ${"#d8d2c2"}`, cellPadding: [7, 0] }}>

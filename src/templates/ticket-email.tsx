@@ -73,7 +73,7 @@ export default function TicketEmail({ fixture = FIXTURE }: { fixture?: Fixture }
         </Text>
         <Row style={{ gap: 12, alignItems: "center" }}>
           <Column style={{ width: 210 }}>
-            <TeamBadge name={home.name} short={home.short} founded={home.founded} color={home.color} />
+            <TeamBadge name={home.name} short={home.short} founded={home.founded} color={home.color} layout="stacked" align="start" />
           </Column>
           <Text
             style={{
@@ -87,7 +87,7 @@ export default function TicketEmail({ fixture = FIXTURE }: { fixture?: Fixture }
             VS
           </Text>
           <Column style={{ width: 210, alignItems: "end" }}>
-            <TeamBadge name={away.name} short={away.short} founded={away.founded} color={away.color} />
+            <TeamBadge name={away.name} short={away.short} founded={away.founded} color={away.color} layout="stacked" align="end" />
           </Column>
         </Row>
         <Text style={{ fontSize: 14, color: "#cfe0d4" }}>

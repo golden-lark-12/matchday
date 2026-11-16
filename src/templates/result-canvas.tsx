@@ -57,11 +57,11 @@ export default function ResultCard({ fixture = FIXTURE }: { fixture?: Fixture })
               ATTENDANCE 4,812 · REFEREE PRIYA RAMAN
             </Text>
           </Column>
-          <Row style={{ gap: 16 }}>
-            <Text style={{ fontFamily: FONTS.mono, fontSize: 14, letterSpacing: 1.5, color: "#cfe0d4" }}>
+          <Row style={{ width: 1072, gap: 16, justifyContent: "space-between" }}>
+            <Text style={{ flex: "none", fontFamily: FONTS.mono, fontSize: 14, letterSpacing: 1.5, color: "#cfe0d4" }}>
               {fixture.venue.toUpperCase()}, {fixture.city.toUpperCase()}
             </Text>
-            <Text style={{ fontFamily: FONTS.mono, fontSize: 14, letterSpacing: 1.5, color: "#c9a227" }}>
+            <Text style={{ flex: "none", fontFamily: FONTS.mono, fontSize: 14, letterSpacing: 1.5, color: "#c9a227" }}>
               NORTHGATE.EXAMPLE
             </Text>
           </Row>

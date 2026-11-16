@@ -123,10 +123,10 @@ export default function MatchCentre({ fixture = FIXTURE }: { fixture?: Fixture }
         <Column style={{ gap: 8, alignItems: "center" }}>
           <Text style={{ apply: ["label"], color: "#cfe0d4", textAlign: "center" }}>Next at {fixture.venue}</Text>
           <Heading level={2} style={{ color: "#ffffff", textAlign: "center" }}>
-            {fixture.nextFixture.split(" — ")[0]}
+            {fixture.nextHomeFixture.split(" — ")[0]}
           </Heading>
           <Text style={{ fontSize: 15, color: "#cfe0d4", textAlign: "center" }}>
-            {fixture.nextFixture.split(" — ")[1]} · Tickets from £14.00 · Dock End from £18.00
+            {fixture.nextHomeFixture.split(" — ")[1]} · Tickets from £14.00 · Dock End from £18.00
           </Text>
         </Column>
         <Button href="https://northgate.example/tickets">Get tickets</Button>
