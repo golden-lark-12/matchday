@@ -218,7 +218,7 @@ export function CrestSvg({ color, size = 52 }: { color: string; size?: number })
   return (
     <Svg width={size} height={size} viewBox="0 0 44 52" title="Club crest: a shield with a gold star.">
       <Polygon points="2,2 42,2 42,26 22,50 2,26" style={{ fill: color }} />
-      <Polygon points="6,6 38,6 38,25 22,44 6,25" style={{ fill: "none", stroke: PAPER, strokeWidth: 1.5 }} />
+      <Polygon points="6,6 38,6 38,25 22,44 6,25" style={{ fill: color, stroke: PAPER, strokeWidth: 1.5 }} />
       <Polygon
         points="22,12 23.9,17.4 29.6,17.6 24.9,21.2 26.5,26.8 22,23.7 17.5,26.8 19.1,21.2 14.4,17.6 20.1,17.4"
         style={{ fill: GOLD }}
