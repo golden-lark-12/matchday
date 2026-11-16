@@ -7,10 +7,12 @@
  * so the four pages are split by hand with Document.Page and sized to fit.
  */
 import {
+  Circle,
   Column,
   Divider,
   Document,
   Heading,
+  Line,
   List,
   ListItem,
   PageFooter,
@@ -30,7 +32,7 @@ import { FIXTURE, type Fixture } from "../fixture.js";
 import { homeTheme } from "../theme.js";
 import { WEB_FONT_FACES } from "../fonts.js";
 import { CrestSvg, InfoPill, Lineup } from "../components.js";
-import { lineupRowsText } from "../pitch.js";
+import { lineupRowsText, formationLines } from "../pitch.js";
 import { codeGrid, codeSvgPath } from "../code.js";
 
 const DARK_TOKENS = {
@@ -84,13 +86,13 @@ export default function ProgrammeDoc({ fixture = FIXTURE }: { fixture?: Fixture 
       <Header />
       <Footer />
 
-      {/* Page 1 — cover. */}
-      <Document.Page style={{ backgroundColor: "#14532d", gap: 0 }}>
-        <Column tokens={DARK_TOKENS} style={{ gap: 26, padding: [36, 8] }}>
+      {/* Page 1 — cover: a pine band on paper, then the shape of the team. */}
+      <Document.Page style={{ gap: 0 }}>
+        <Column tokens={DARK_TOKENS} style={{ backgroundColor: "#14532d", gap: 20, padding: [32, 24] }}>
           <Text style={{ apply: ["label"], color: "#cfe0d4" }}>
             {fixture.competition} · Matchday {fixture.matchday}
           </Text>
-          <Heading level={1} style={{ fontSize: 96, lineHeight: 0.9, letterSpacing: -1, color: "#ffffff" }}>
+          <Heading level={1} style={{ fontSize: 88, lineHeight: 0.9, letterSpacing: -1, color: "#ffffff" }}>
             MATCHDAY
           </Heading>
           <Column style={{ gap: 14 }}>
@@ -115,8 +117,31 @@ export default function ProgrammeDoc({ fixture = FIXTURE }: { fixture?: Fixture 
               {fixture.venue}, {fixture.city} · Gates open 13:30
             </Text>
           </Column>
-          <Text style={{ fontSize: 12, color: "#cfe0d4" }}>
-            Official programme · £3.00 · Inside: the manager's notes, both starting line-ups and the league table.
+        </Column>
+        <Column style={{ gap: 14, padding: [26, 8, 0] }}>
+          <Text style={{ apply: ["label"] }}>How they line up — {home.formation}</Text>
+          <Svg width={491} height={190} title={`A football pitch seen from above, with the ${home.name} starting eleven as dots in a ${home.formation}.`}>
+            <Rect x={0} y={0} width={491} height={190} style={{ fill: "#1e6b41" }} />
+            <Rect x={2} y={2} width={487} height={186} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
+            <Line x1={245.5} y1={2} x2={245.5} y2={188} style={{ stroke: "#ffffff", strokeWidth: 2 }} />
+            <Circle cx={245.5} cy={95} r={32} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
+            <Rect x={2} y={55} width={52} height={80} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
+            <Rect x={437} y={55} width={52} height={80} style={{ fill: "#1e6b41", stroke: "#ffffff", strokeWidth: 2 }} />
+            {(() => {
+              const lines = formationLines(home);
+              const xs = [48, 150, 262, 384];
+              return lines.flatMap((line, li) =>
+                line.map((player, i) => {
+                  const y = line.length === 1 ? 95 : 32 + (i * (190 - 64)) / (line.length - 1);
+                  return <Circle key={player.number} cx={xs[li]} cy={y} r={8} style={{ fill: "#ffffff" }} />;
+                }),
+              );
+            })()}
+          </Svg>
+          <Text style={{ fontSize: 13, lineHeight: 1.55, color: token("colors.muted") }}>
+            Eleven dots, one shape: Mara Ellison keeps the {home.formation} that has carried Rovers to
+            the top of the table. Official programme · £3.00 · Inside: the manager's notes, both
+            starting line-ups and the league table.
           </Text>
         </Column>
       </Document.Page>

@@ -71,8 +71,8 @@ export default function TicketEmail({ fixture = FIXTURE }: { fixture?: Fixture }
         <Text style={{ apply: ["label"], color: "#cfe0d4" }}>
           {fixture.competition} · Matchday {fixture.matchday}
         </Text>
-        <Row style={{ gap: 16, alignItems: "center" }}>
-          <Column>
+        <Row style={{ gap: 12, alignItems: "center" }}>
+          <Column style={{ width: 210 }}>
             <TeamBadge name={home.name} short={home.short} founded={home.founded} color={home.color} />
           </Column>
           <Text
@@ -86,7 +86,7 @@ export default function TicketEmail({ fixture = FIXTURE }: { fixture?: Fixture }
           >
             VS
           </Text>
-          <Column style={{ alignItems: "end" }}>
+          <Column style={{ width: 210, alignItems: "end" }}>
             <TeamBadge name={away.name} short={away.short} founded={away.founded} color={away.color} />
           </Column>
         </Row>

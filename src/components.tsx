@@ -39,7 +39,7 @@ export const TeamBadge = component({
     color: prop.color({ label: "Club colour", default: "#14532d" }),
   },
   render: ({ name, short, founded, color }) => (
-    <Row style={{ gap: 12, alignItems: "center" }}>
+    <Row stackOnMobile={false} style={{ gap: 12, alignItems: "center" }}>
       <Text
         style={{
           flex: "none",
@@ -76,8 +76,10 @@ export const ScoreLine = component({
     homeScore: prop.number({ label: "Home score", integer: true, min: 0, max: 99, default: 0 }),
     awayScore: prop.number({ label: "Away score", integer: true, min: 0, max: 99, default: 0 }),
     status: prop.text({ label: "Status", default: "FULL-TIME" }),
+    size: prop.choice(["standard", "large"] as const, { label: "Size", default: "standard" }),
+    centerOnMobile: prop.boolean({ label: "Centre team names on phones", default: false }),
   },
-  render: ({ home, away, homeScore, awayScore, status }) => (
+  render: ({ home, away, homeScore, awayScore, status, size, centerOnMobile }) => (
     <Column style={{ gap: 10, alignItems: "center" }}>
       <Text
         style={{
@@ -85,6 +87,7 @@ export const ScoreLine = component({
           fontSize: 11,
           fontWeight: 500,
           letterSpacing: 2,
+          textAlign: "center",
           color: token("colors.muted"),
         }}
       >
@@ -95,9 +98,10 @@ export const ScoreLine = component({
           style={{
             fontFamily: FONTS.heading,
             fontWeight: 600,
-            fontSize: 30,
+            fontSize: size === "large" ? 40 : 30,
             lineHeight: 1,
             textAlign: "right",
+            ...(centerOnMobile ? { mobile: { textAlign: "center" as const } } : {}),
           }}
         >
           {home}
@@ -107,9 +111,10 @@ export const ScoreLine = component({
             flex: "none",
             fontFamily: FONTS.heading,
             fontWeight: 700,
-            fontSize: 76,
+            fontSize: size === "large" ? 110 : 76,
             lineHeight: 0.9,
             letterSpacing: -1,
+            textAlign: "center",
           }}
         >
           {homeScore} – {awayScore}
@@ -118,9 +123,10 @@ export const ScoreLine = component({
           style={{
             fontFamily: FONTS.heading,
             fontWeight: 600,
-            fontSize: 30,
+            fontSize: size === "large" ? 40 : 30,
             lineHeight: 1,
             textAlign: "left",
+            ...(centerOnMobile ? { mobile: { textAlign: "center" as const } } : {}),
           }}
         >
           {away}
@@ -145,7 +151,7 @@ export const Lineup = component({
   },
   render: ({ team, formation, rows, color }) => (
     <Column style={{ gap: 12 }}>
-      <Row style={{ gap: 12, alignItems: "center" }}>
+      <Row stackOnMobile={false} style={{ gap: 12, alignItems: "center" }}>
         <Text style={{ fontFamily: FONTS.heading, fontWeight: 700, fontSize: 24, lineHeight: 1 }}>{team}</Text>
         <Text
           style={{
@@ -245,7 +251,7 @@ export function PitchSvg({
   const x0 = 60;
   const x1 = width - 60;
   const y0 = 210;
-  const y1 = height - 60;
+  const y1 = height - 110;
   const midY = (y0 + y1) / 2;
   const boxW = 400;
   const boxH = 150;

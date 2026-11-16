@@ -49,8 +49,14 @@ export default function ResultCard({ fixture = FIXTURE }: { fixture?: Fixture })
             homeScore={fixture.homeScore}
             awayScore={fixture.awayScore}
             status={`${fixture.competition.toUpperCase()} · MATCHDAY ${fixture.matchday} · ${fixture.status}`}
+            size="large"
           />
-          <Text style={{ fontSize: 19, lineHeight: 1.5, color: "#ffffff", textAlign: "center" }}>{scorers}</Text>
+          <Column style={{ gap: 10, alignItems: "center" }}>
+            <Text style={{ fontSize: 19, lineHeight: 1.5, color: "#ffffff", textAlign: "center" }}>{scorers}</Text>
+            <Text style={{ fontFamily: FONTS.mono, fontSize: 13, letterSpacing: 1.5, color: "#cfe0d4", textAlign: "center" }}>
+              ATTENDANCE 4,812 · REFEREE PRIYA RAMAN
+            </Text>
+          </Column>
           <Row style={{ gap: 16 }}>
             <Text style={{ fontFamily: FONTS.mono, fontSize: 14, letterSpacing: 1.5, color: "#cfe0d4" }}>
               {fixture.venue.toUpperCase()}, {fixture.city.toUpperCase()}

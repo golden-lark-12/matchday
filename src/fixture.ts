@@ -25,6 +25,8 @@ export interface Team {
    * goalkeeper first, then defenders, midfielders, forwards. */
   formation: string;
   players: Player[];
+  /** Substitutes, in the order they sit on the bench. */
+  subs: Player[];
   /** The club's main colour (hex). */
   color: string;
 }
@@ -81,6 +83,8 @@ export interface Fixture {
   scorers: { name: string; team: string; goals: number }[];
   form: string[];
   nextFixture: string;
+  /** The rest of the league's fixtures this matchday. */
+  otherFixtures: string[];
 }
 
 /** The match: Northgate Rovers (home) v Seabrook United, Matchday 14. */
@@ -109,6 +113,13 @@ export const FIXTURE: Fixture = {
       { number: 10, name: "Idris Bello" },
       { number: 11, name: "Leo Marchetti" },
     ],
+    subs: [
+      { number: 13, name: "Tomas Adeyemi" },
+      { number: 14, name: "Joe Hartley" },
+      { number: 15, name: "Milan Novak" },
+      { number: 16, name: "Callum Byrne" },
+      { number: 12, name: "Owen Ashaolu" },
+    ],
     color: "#14532d",
   },
   away: {
@@ -128,6 +139,13 @@ export const FIXTURE: Fixture = {
       { number: 11, name: "Santi Rojas" },
       { number: 9, name: "Marco Bellini" },
       { number: 10, name: "Ewan Fraser" },
+    ],
+    subs: [
+      { number: 12, name: "Kwame Osei" },
+      { number: 14, name: "Felix Lindgren" },
+      { number: 15, name: "Harry Marsh" },
+      { number: 16, name: "Sean Doyle" },
+      { number: 13, name: "Ben Whitaker" },
     ],
     color: "#1b4f72",
   },
@@ -168,4 +186,10 @@ export const FIXTURE: Fixture = {
   ],
   form: ["W", "W", "D", "W", "W"],
   nextFixture: "Kestrel Town (away) — Saturday 5 December 2026, 15:00",
+  otherFixtures: [
+    "Kestrel Town v Ashford Vale — Saturday 28 November, 15:00",
+    "Millfield Athletic v Harbour Town — Saturday 28 November, 15:00",
+    "Corby Vale v Dockside Rovers — Saturday 28 November, 15:00",
+    "Ashford Vale v Millfield Athletic — Saturday 5 December, 15:00",
+  ],
 };

@@ -16,22 +16,29 @@ import { formationLines } from "../pitch.js";
 function PlayerChip({ player }: { player: Player }) {
   return (
     <Column style={{ width: 200, gap: 8, alignItems: "center" }}>
-      <Text
+      <Column
         style={{
-          fontFamily: FONTS.heading,
-          fontWeight: 700,
-          fontSize: 30,
-          lineHeight: "60px",
-          color: "#14532d",
-          backgroundColor: "#ffffff",
-          borderRadius: 999,
           width: 60,
           height: 60,
-          textAlign: "center",
+          borderRadius: 999,
+          backgroundColor: "#ffffff",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
-        {player.number}
-      </Text>
+        <Text
+          style={{
+            fontFamily: FONTS.heading,
+            fontWeight: 700,
+            fontSize: 30,
+            lineHeight: 1,
+            color: "#14532d",
+            textAlign: "center",
+          }}
+        >
+          {player.number}
+        </Text>
+      </Column>
       <Text
         style={{
           fontWeight: 600,
@@ -64,7 +71,7 @@ export default function StartingXi({ fixture = FIXTURE }: { fixture?: Fixture })
     >
       <Layer style={{ height: 1350, alignItems: "center" }}>
         <PitchSvg width={1080} height={1350} pitch="#1e6b41" line="#ffffff" />
-        <Column style={{ height: 1350, padding: [40, 60, 48], justifyContent: "space-between" }}>
+        <Column style={{ height: 1262, padding: [40, 60, 48], justifyContent: "space-between" }}>
           <Row style={{ gap: 16, alignItems: "center" }}>
             <CrestSvg color="#0f3d22" size={64} />
             <Column style={{ gap: 4 }}>
