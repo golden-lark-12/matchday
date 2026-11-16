@@ -13,9 +13,9 @@ import { WEB_FONT_FACES, FONTS } from "../fonts.js";
 import { CrestSvg, PitchSvg } from "../components.js";
 import { formationLines } from "../pitch.js";
 
-function PlayerChip({ player }: { player: Player }) {
+function PlayerChip({ player, width }: { player: Player; width: number }) {
   return (
-    <Column style={{ width: 200, gap: 8, alignItems: "center" }}>
+    <Column style={{ width, gap: 8, alignItems: "center" }}>
       <Column
         style={{
           width: 60,
@@ -59,6 +59,10 @@ export default function StartingXi({ fixture = FIXTURE }: { fixture?: Fixture })
   const [gk, def, mid, fwd] = formationLines(home);
   // Attack at the top, goalkeeper at the bottom — the way a teamsheet reads.
   const lines: Player[][] = [fwd, mid, def, gk];
+  // A five-man line (3-5-2) needs narrower chips: five 200px chips are
+  // 1000px in a 960px row, which the checker flags as shrunk-to-fit.
+  const widest = Math.max(...lines.map((l) => l.length));
+  const chipWidth = Math.min(200, Math.floor(920 / widest));
   return (
     <Canvas
       width={1080}
@@ -97,7 +101,7 @@ export default function StartingXi({ fixture = FIXTURE }: { fixture?: Fixture })
               style={{ justifyContent: line.length === 1 ? "center" : "space-between", alignItems: "start" }}
             >
               {line.map((player) => (
-                <PlayerChip key={player.number} player={player} />
+                <PlayerChip key={player.number} player={player} width={chipWidth} />
               ))}
             </Row>
           ))}
