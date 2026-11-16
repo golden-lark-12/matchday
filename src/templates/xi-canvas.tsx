@@ -6,7 +6,7 @@
  * fixture.ts and the rows regroup. Rendered with renderImage() — the local
  * TTFs go in as bytes, nothing is fetched.
  */
-import { Canvas, Column, Layer, Row, Text } from "@hyper-elements/react";
+import { Canvas, Column, Layer, Row, Text, type Theme } from "@hyper-elements/react";
 import { FIXTURE, type Fixture, type Player } from "../fixture.js";
 import { homeTheme } from "../theme.js";
 import { WEB_FONT_FACES, FONTS } from "../fonts.js";
@@ -54,7 +54,7 @@ function PlayerChip({ player, width }: { player: Player; width: number }) {
   );
 }
 
-export default function StartingXi({ fixture = FIXTURE }: { fixture?: Fixture }) {
+export default function StartingXi({ fixture = FIXTURE, theme = homeTheme }: { fixture?: Fixture; theme?: Theme }) {
   const { home } = fixture;
   const [gk, def, mid, fwd] = formationLines(home);
   // Attack at the top, goalkeeper at the bottom — the way a teamsheet reads.
@@ -67,7 +67,7 @@ export default function StartingXi({ fixture = FIXTURE }: { fixture?: Fixture })
     <Canvas
       width={1080}
       height={1350}
-      theme={homeTheme}
+      theme={theme}
       lang="en"
       title={`${home.name} starting XI — ${home.formation}, matchday ${fixture.matchday}`}
       fonts={WEB_FONT_FACES}

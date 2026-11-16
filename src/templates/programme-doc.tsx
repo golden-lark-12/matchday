@@ -27,6 +27,7 @@ import {
   TableRow,
   Text,
   token,
+  type Theme,
 } from "@hyper-elements/react";
 import { FIXTURE, type Fixture } from "../fixture.js";
 import { homeTheme } from "../theme.js";
@@ -70,14 +71,14 @@ function Footer() {
   );
 }
 
-export default function ProgrammeDoc({ fixture = FIXTURE }: { fixture?: Fixture }) {
+export default function ProgrammeDoc({ fixture = FIXTURE, theme = homeTheme }: { fixture?: Fixture; theme?: Theme }) {
   const { home, away, ticket } = fixture;
   const code = codeGrid(ticket.number);
   return (
     <Document
       size="A4"
       margin={[44, 52, 44, 52]}
-      theme={homeTheme}
+      theme={theme}
       lang="en"
       title={`${home.name} v ${away.name} — matchday programme, ${fixture.date}`}
       fonts={WEB_FONT_FACES}

@@ -29,6 +29,7 @@ import {
   Span,
   Text,
   token,
+  type Theme,
 } from "@hyper-elements/react";
 import { FIXTURE, type Fixture } from "../fixture.js";
 import { homeTheme } from "../theme.js";
@@ -54,12 +55,12 @@ const DARK = {
   colors: { background: "#14532d", foreground: "#ffffff", muted: "#cfe0d4" },
 };
 
-export default function TicketEmail({ fixture = FIXTURE }: { fixture?: Fixture }) {
+export default function TicketEmail({ fixture = FIXTURE, theme = homeTheme }: { fixture?: Fixture; theme?: Theme }) {
   const { home, away, ticket } = fixture;
   return (
     <Email
       width={600}
-      theme={homeTheme}
+      theme={theme}
       lang="en"
       title={`${home.short} v ${away.short} — your match ticket`}
       previewText={`Your ${home.name} ticket — ${ticket.stand}, Row ${ticket.row}, Seat ${ticket.seat}. ${fixture.date}, kickoff ${fixture.kickoff}.`}

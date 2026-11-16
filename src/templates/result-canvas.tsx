@@ -5,7 +5,7 @@
  * dark pine card with gold diagonals drawn in Svg. Change the score in
  * fixture.ts and this card (and the match-centre page) update with it.
  */
-import { Canvas, Circle, Column, Layer, Polygon, Rect, Row, Svg, Text } from "@hyper-elements/react";
+import { Canvas, Circle, Column, Layer, Polygon, Rect, Row, Svg, Text, type Theme } from "@hyper-elements/react";
 import { FIXTURE, type Fixture } from "../fixture.js";
 import { homeTheme } from "../theme.js";
 import { WEB_FONT_FACES, FONTS } from "../fonts.js";
@@ -15,7 +15,7 @@ const DARK_TOKENS = {
   colors: { foreground: "#ffffff", muted: "#cfe0d4", primary: "#c9a227" },
 };
 
-export default function ResultCard({ fixture = FIXTURE }: { fixture?: Fixture }) {
+export default function ResultCard({ fixture = FIXTURE, theme = homeTheme }: { fixture?: Fixture; theme?: Theme }) {
   const { home, away } = fixture;
   const scorers = fixture.timeline
     .filter((e) => e.text.startsWith("Goal"))
@@ -25,7 +25,7 @@ export default function ResultCard({ fixture = FIXTURE }: { fixture?: Fixture })
     <Canvas
       width={1200}
       height={630}
-      theme={homeTheme}
+      theme={theme}
       lang="en"
       title={`${home.name} ${fixture.homeScore}–${fixture.awayScore} ${away.name} — full-time result`}
       fonts={WEB_FONT_FACES}

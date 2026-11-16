@@ -23,6 +23,7 @@ import {
   TableRow,
   Text,
   token,
+  type Theme,
 } from "@hyper-elements/react";
 import { FIXTURE, type Fixture } from "../fixture.js";
 import { homeTheme } from "../theme.js";
@@ -45,12 +46,12 @@ const DARK_CTA = {
   },
 };
 
-export default function MatchCentre({ fixture = FIXTURE }: { fixture?: Fixture }) {
+export default function MatchCentre({ fixture = FIXTURE, theme = homeTheme }: { fixture?: Fixture; theme?: Theme }) {
   const { home, away } = fixture;
   return (
     <Page
       width={960}
-      theme={homeTheme}
+      theme={theme}
       lang="en"
       title={`${home.name} ${fixture.homeScore}–${fixture.awayScore} ${away.name} — match centre`}
       description={`Full-time at ${fixture.venue}: ${home.name} ${fixture.homeScore}–${fixture.awayScore} ${away.name}. Timeline, line-ups and tickets for the next home game.`}
