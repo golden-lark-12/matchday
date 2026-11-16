@@ -13,6 +13,7 @@ import { renderPdf } from "@hyper-elements/react/pdf";
 import { renderImage } from "@hyper-elements/react/image";
 import { emailClients } from "@hyper-elements/email-clients";
 import { FIXTURE } from "../src/fixture.js";
+import { awayTheme, homeTheme } from "../src/theme.js";
 import { formationLines, parseFormation } from "../src/pitch.js";
 import { codeGrid, codePng } from "../src/code.js";
 import { loadLocalFonts } from "../src/fonts.js";
@@ -105,5 +106,45 @@ describe("templates", () => {
     clean("result card image", img.diagnostics);
     expect(img.width).toBe(1200);
     expect(img.height).toBe(630);
+  });
+});
+
+describe("away theme", () => {
+  it("every template renders with awayTheme and zero diagnostics", async () => {
+    const fonts = await loadLocalFonts();
+    const clients = await emailClients();
+
+    const emailEl = createElement(TicketEmail, { fixture: FIXTURE, theme: awayTheme }) as ReactElement;
+    clean("away ticket email", validate(emailEl, { plugins: [clients] }).diagnostics);
+    clean("away ticket email render", (await render(emailEl)).diagnostics);
+
+    const pageEl = createElement(MatchCentre, { fixture: FIXTURE, theme: awayTheme }) as ReactElement;
+    clean("away match centre", validate(pageEl).diagnostics);
+    clean("away match centre render", (await render(pageEl)).diagnostics);
+
+    const docEl = createElement(ProgrammeDoc, { fixture: FIXTURE, theme: awayTheme }) as ReactElement;
+    clean("away programme", validate(docEl).diagnostics);
+    clean("away programme render", (await render(docEl)).diagnostics);
+    clean("away programme pdf", (await renderPdf(docEl, { fonts })).diagnostics);
+
+    const xiEl = createElement(StartingXi, { fixture: FIXTURE, theme: awayTheme }) as ReactElement;
+    clean("away starting XI", validate(xiEl).diagnostics);
+    clean("away starting XI image", (await renderImage(xiEl, { fonts })).diagnostics);
+
+    const cardEl = createElement(ResultCard, { fixture: FIXTURE, theme: awayTheme }) as ReactElement;
+    clean("away result card", validate(cardEl).diagnostics);
+    clean("away result card image", (await renderImage(cardEl, { fonts })).diagnostics);
+  });
+
+  it("away theme re-skins the ticket email button pine -> sea blue", async () => {
+    const buttonCell = (html: string) => {
+      const i = html.indexOf("View the match centre");
+      expect(i).toBeGreaterThan(0);
+      return html.slice(Math.max(0, i - 700), i);
+    };
+    const home = await render(createElement(TicketEmail, { fixture: FIXTURE, theme: homeTheme }) as ReactElement);
+    const away = await render(createElement(TicketEmail, { fixture: FIXTURE, theme: awayTheme }) as ReactElement);
+    expect(buttonCell(home.html)).toContain("background-color:#14532d");
+    expect(buttonCell(away.html)).toContain("background-color:#1b4f72");
   });
 });
