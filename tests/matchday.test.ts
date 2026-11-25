@@ -12,9 +12,10 @@ import { render, validate, type Diagnostic } from "@hyper-elements/react";
 import { renderPdf } from "@hyper-elements/react/pdf";
 import { renderImage } from "@hyper-elements/react/image";
 import { emailClients } from "@hyper-elements/email-clients";
-import { FIXTURE } from "../src/fixture.js";
+import { FIXTURE, type Fixture } from "../src/fixture.js";
 import { awayTheme, homeTheme } from "../src/theme.js";
 import { formationLines, parseFormation } from "../src/pitch.js";
+import { rowCenters, xiClearanceViolations, xiSpacers } from "../src/xi-layout.js";
 import { codeGrid, codePng } from "../src/code.js";
 import { loadLocalFonts } from "../src/fonts.js";
 import TicketEmail from "../src/templates/ticket-email.js";
@@ -146,5 +147,66 @@ describe("away theme", () => {
     const away = await render(createElement(TicketEmail, { fixture: FIXTURE, theme: awayTheme }) as ReactElement);
     expect(buttonCell(home.html)).toContain("background-color:#14532d");
     expect(buttonCell(away.html)).toContain("background-color:#1b4f72");
+  });
+});
+
+describe("starting XI layout", () => {
+  const linesFor = (formation: string) => {
+    const f: Fixture = JSON.parse(JSON.stringify(FIXTURE));
+    f.home.formation = formation;
+    return formationLines(f.home);
+  };
+
+  it("clears every pitch line in 4-3-3, 4-4-2, 3-5-2 and the other valid shapes", () => {
+    for (const formation of ["4-3-3", "4-4-2", "3-5-2", "5-3-2", "3-4-3", "4-2-4"]) {
+      const lines = linesFor(formation);
+      const centers = rowCenters(lines);
+      expect(xiClearanceViolations(lines, centers), `${formation} should clear the pitch lines`).toEqual([]);
+      const spacers = xiSpacers(centers);
+      expect(spacers.every((s) => s >= 0), `${formation} spacers should be non-negative`).toBe(true);
+      expect(spacers.reduce((a, b) => a + b, 0)).toBe(715);
+    }
+  });
+
+  it("pushes the defence row below the centre circle only when it has a centre chip", () => {
+    const plain = rowCenters(linesFor("4-3-3"));
+    const shifted = rowCenters(linesFor("3-5-2"));
+    expect(shifted[2]).toBeGreaterThan(plain[2]);
+    expect(plain[2]).toBe(796);
+    expect(shifted[2]).toBe(880);
+    expect(plain[3]).toBe(1010);
+  });
+
+  it("renders 1080x1350 with zero diagnostics in all three formations", async () => {
+    const fonts = await loadLocalFonts();
+    for (const formation of ["4-3-3", "4-4-2", "3-5-2"]) {
+      const f: Fixture = JSON.parse(JSON.stringify(FIXTURE));
+      f.home.formation = formation;
+      const el = createElement(StartingXi, { fixture: f }) as ReactElement;
+      clean(`starting XI ${formation}`, validate(el).diagnostics);
+      const img = await renderImage(el, { fonts });
+      clean(`starting XI image ${formation}`, img.diagnostics);
+      expect(img.width).toBe(1080);
+      expect(img.height).toBe(1350);
+    }
+  });
+});
+
+describe("offline rendering", () => {
+  it("greets the ticket holder by name, with no raw merge tag", async () => {
+    const out = await render(createElement(TicketEmail, { fixture: FIXTURE }) as ReactElement);
+    expect(out.html).toContain("Hello Jordan,");
+    expect(out.html).not.toContain("{{first_name}}");
+    expect(out.html).not.toContain("first_name");
+  });
+
+  it("loads no remote images in the email or the page", async () => {
+    const email = await render(createElement(TicketEmail, { fixture: FIXTURE }) as ReactElement);
+    const page = await render(createElement(MatchCentre, { fixture: FIXTURE }) as ReactElement);
+    for (const [name, html] of [["email", email.html], ["page", page.html]] as const) {
+      expect(html, `${name} should not reference the social-icon CDN`).not.toContain("cdn.tools.unlayer.com");
+      expect(html, `${name} should have no remote <img> src`).not.toMatch(/<img[^>]+src="https?:/);
+    }
+    expect(email.html).toContain("data:image/png;base64");
   });
 });

@@ -194,11 +194,28 @@ export default function ProgrammeDoc({ fixture = FIXTURE, theme = homeTheme }: {
           </Text>
         </Column>
         <Column style={{ gap: 10 }}>
+          <Text style={{ apply: ["label"] }}>Scouting Seabrook</Text>
+          <Text style={{ fontSize: 14, lineHeight: 1.6 }}>
+            Seabrook play a {away.formation} and build everything through Marco Bellini, the
+            league's second-highest scorer with nine goals, and Ewan Fraser, who has six. They sit
+            two points behind us with the league's meanest defence — thirteen conceded all
+            season — so the first goal matters more than usual today.
+          </Text>
+        </Column>
+        <Column style={{ gap: 10 }}>
+          <Text style={{ apply: ["label"] }}>From the archives</Text>
+          <Text style={{ fontSize: 14, lineHeight: 1.6 }}>
+            Last season's meeting here finished 1–1, Vane cancelling out a Bellini penalty. Rovers
+            have not lost to Seabrook at {fixture.venue} since the visitors' promotion season.
+          </Text>
+        </Column>
+        <Column style={{ gap: 10 }}>
           <Text style={{ apply: ["label"] }}>Matchday information</Text>
           <List style={{ gap: 6, fontSize: 13.5, lineHeight: 1.5 }}>
             <ListItem>Gates open at 13:30. Arrive by 14:30 to catch the teams warming up.</ListItem>
             <ListItem>Tram: the Dockside line to {fixture.venue} Halt — four minutes on foot from the stop.</ListItem>
             <ListItem>Bring photo ID that matches the name on your ticket.</ListItem>
+            <ListItem>The Dock End Fan Zone opens at 13:00, with the club shop and the programme stall.</ListItem>
           </List>
         </Column>
       </Document.Page>
@@ -240,6 +257,22 @@ export default function ProgrammeDoc({ fixture = FIXTURE, theme = homeTheme }: {
               <TableCell style={{ fontSize: 13.5, fontWeight: 600 }}>Elena Petrova</TableCell>
             </TableRow>
           </Table>
+        </Column>
+        <Column style={{ gap: 10 }}>
+          <Text style={{ apply: ["label"] }}>Key battles</Text>
+          <List style={{ gap: 6, fontSize: 13.5, lineHeight: 1.5 }}>
+            <ListItem>Callum Vane, eleven league goals, against Oscar Lindqvist, the organiser of Seabrook's back four.</ListItem>
+            <ListItem>Dario Fontaine's crosses from the right against Santi Rojas tracking back.</ListItem>
+            <ListItem>Ruben Solberg, back from suspension, against Adam Kowalski in the middle of the park.</ListItem>
+          </List>
+        </Column>
+        <Column style={{ gap: 10 }}>
+          <Text style={{ apply: ["label"] }}>Notes for the record</Text>
+          <List style={{ gap: 6, fontSize: 13.5, lineHeight: 1.5 }}>
+            <ListItem>Mara Ellison names the same starting eleven for the third game running.</ListItem>
+            <ListItem>Tomas Adeyemi is in a senior matchday squad for the first time.</ListItem>
+            <ListItem>Tomas Kett has started every league game this season.</ListItem>
+          </List>
         </Column>
       </Document.Page>
 
@@ -291,8 +324,22 @@ export default function ProgrammeDoc({ fixture = FIXTURE, theme = homeTheme }: {
             <Text style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 14, fontWeight: 700, letterSpacing: 2 }}>
               {fixture.form.join("  ")}
             </Text>
+          </Column>
+        </Row>
+        <Row style={{ gap: 28, alignItems: "start" }}>
+          <Column style={{ gap: 10 }}>
+            <Text style={{ apply: ["label"] }}>Coming up</Text>
+            <List style={{ gap: 6, fontSize: 13.5, lineHeight: 1.5 }}>
+              <ListItem>{fixture.nextFixture}</ListItem>
+              <ListItem>{fixture.nextHomeFixture}</ListItem>
+              <ListItem>{fixture.otherFixtures[3]}</ListItem>
+            </List>
+          </Column>
+          <Column style={{ gap: 10 }}>
+            <Text style={{ apply: ["label"] }}>Did you know?</Text>
             <Text style={{ fontSize: 13, lineHeight: 1.5, color: token("colors.muted") }}>
-              Next: {fixture.nextFixture}.
+              {home.name} were founded in {home.founded}; {away.name} followed in{" "}
+              {away.founded}. Rovers top the table by two points going into today.
             </Text>
           </Column>
         </Row>

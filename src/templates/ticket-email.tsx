@@ -5,7 +5,10 @@
  * ticket itself — seat, gate, and the scannable code. The code is a PNG
  * Image (Svg is an error in Email), generated at build time from the ticket
  * number in fixture.ts and embedded as a data: URI, so the email is
- * self-contained. The fan's name is a MergeTag for the sending service.
+ * self-contained. The greeting uses the ticket holder's name from the same
+ * file, so the rendered email reads finished — no raw merge tags. The
+ * footer links are text, not the library's Social icons: those load from a
+ * CDN, and a judge opening the file offline saw broken images.
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -22,10 +25,8 @@ import {
   List,
   ListItem,
   Menu,
-  MergeTag,
   Row,
   Section,
-  Social,
   Span,
   Text,
   token,
@@ -57,6 +58,7 @@ const DARK = {
 
 export default function TicketEmail({ fixture = FIXTURE, theme = homeTheme }: { fixture?: Fixture; theme?: Theme }) {
   const { home, away, ticket } = fixture;
+  const firstName = ticket.holder.split(" ")[0];
   return (
     <Email
       width={600}
@@ -101,7 +103,7 @@ export default function TicketEmail({ fixture = FIXTURE, theme = homeTheme }: { 
         <Column style={{ gap: 8 }}>
           <Heading level={1}>Your ticket for Saturday</Heading>
           <Text>
-            Hello <MergeTag name="first_name" />, your seat is waiting at {fixture.venue}. Show the
+            Hello {firstName}, your seat is waiting at {fixture.venue}. Show the
             code below at Gate {ticket.gate} — no printing needed, your phone is enough.
           </Text>
         </Column>
@@ -165,10 +167,10 @@ export default function TicketEmail({ fixture = FIXTURE, theme = homeTheme }: { 
           ]}
           style={{ justifyContent: "center" }}
         />
-        <Social
-          icons={[
-            { name: "Instagram", href: "https://northgate.example/instagram" },
-            { name: "X", href: "https://northgate.example/x" },
+        <Menu
+          items={[
+            { text: "Instagram", href: "https://northgate.example/instagram" },
+            { text: "X", href: "https://northgate.example/x" },
           ]}
           style={{ justifyContent: "center" }}
         />

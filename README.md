@@ -130,7 +130,7 @@ Fonts travel two ways on purpose: Email and Page load the faces as webfonts (Fon
 - Classic Outlook (Word) drops `border-radius` and web fonts — the ticket card and badges fall back to square corners and the system stacks, and still read correctly.
 - Outlook.com drops the hover state and `@media` rules — the layout is fluid (inline-block columns wrap) so phones still get a readable email.
 - Gmail strips `@font-face` — every stack ends in a font the client has.
-- The social icons are the library's own CDN images; they load in real clients (verified live) and show as placeholders only in the offline emulator screenshots below.
+- The footer links are plain text, not the library's `Social` icons: those load from a CDN, and opening the files offline showed broken images. The greeting uses the ticket holder's name from `fixture.ts`, so the rendered email reads finished — no raw merge tags.
 
 | Classic Outlook | Gmail | Apple Mail |
 |---|---|---|
@@ -140,7 +140,7 @@ Known Outlook quirk, left as-is: Word ignores the fixed width on the away badge,
 
 ## Tests
 
-`tests/matchday.test.ts` (Vitest, `npm test`) renders every root and asserts zero errors and zero warnings, the email under 102 KB, the PDF starting `%PDF-`, the images at 1080×1350 and 1200×630, formation parsing (`4-3-3` → `[4, 3, 3]`), and the ticket code being deterministic. It also renders all five templates with `awayTheme` (zero diagnostics) and asserts the away email's button is sea blue while the home email's is pine. GitHub Actions (`.github/workflows/ci.yml`) runs `npm run check`, `npm test` and `npm run build` on every push and pull request.
+`tests/matchday.test.ts` (Vitest, `npm test`) renders every root and asserts zero errors and zero warnings, the email under 102 KB, the PDF starting `%PDF-`, the images at 1080×1350 and 1200×630, formation parsing (`4-3-3` → `[4, 3, 3]`), and the ticket code being deterministic. It also renders all five templates with `awayTheme` (zero diagnostics) and asserts the away email's button is sea blue while the home email's is pine. The starting-XI layout is covered geometrically: `src/xi-layout.ts` computes formation-aware row centres, and the tests assert no chip disc or name touches a pitch line in `4-3-3`, `4-4-2`, `3-5-2`, `5-3-2`, `3-4-3` or `4-2-4`, and that the XI renders clean in all three formations the fixture uses. The email greets the ticket holder by name with no raw merge tag, and neither the email nor the page loads a remote image. GitHub Actions (`.github/workflows/ci.yml`) runs `npm run check`, `npm test` and `npm run build` on every push and pull request.
 
 ## Layout
 
@@ -151,6 +151,7 @@ matchday/
 │   ├── theme.ts              # defineTheme home theme + extendTheme away theme
 │   ├── components.tsx        # component() shared blocks + Svg crest/pitch
 │   ├── pitch.ts              # formation parsing + line slicing
+│   ├── xi-layout.ts          # formation-aware XI row centres + pitch-line clearance
 │   ├── code.ts               # seeded ticket-code grid (PNG + Svg path)
 │   ├── fonts.ts              # webfont faces + local TTFs as bytes
 │   ├── render-all.ts         # validate -> render -> output/

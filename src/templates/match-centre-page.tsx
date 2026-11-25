@@ -17,7 +17,6 @@ import {
   Page,
   Row,
   Section,
-  Social,
   Table,
   TableCell,
   TableRow,
@@ -152,10 +151,12 @@ export default function MatchCentre({ fixture = FIXTURE, theme = homeTheme }: { 
             style={{ justifyContent: "end" }}
           />
         </Row>
-        <Social
-          icons={[
-            { name: "Instagram", href: "https://northgate.example/instagram" },
-            { name: "X", href: "https://northgate.example/x" },
+        {/* Text links, not the library's Social icons: those load from a
+            CDN, and the page opened offline showed broken images. */}
+        <Menu
+          items={[
+            { text: "Instagram", href: "https://northgate.example/instagram" },
+            { text: "X", href: "https://northgate.example/x" },
           ]}
         />
         <Text style={{ fontSize: 12, color: token("colors.muted") }}>
