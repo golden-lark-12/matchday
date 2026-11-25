@@ -2,6 +2,8 @@
 
 **One typed fixture file drives a whole matchday: a ticket email, a 4-page programme PDF, a starting-XI social image, a full-time result card, and a match-centre page — all from `src/fixture.ts`.**
 
+Live preview: [match centre](https://golden-lark-12.github.io/matchday/match-centre.html) — the rendered page, served from this repo.
+
 ![Matchday — all five outputs](docs/hero.png)
 
 Everything here is invented: the clubs (Northgate Rovers, Seabrook United), the players, the venue (The Dockyard), the sponsor (Harbour & Pine). No real clubs, players, logos or sponsors. Built for the [Unlayer Hyper Elements Template Challenge](https://github.com/hyper-elements/hyper-elements/discussions/categories/challenge-submissions) — $500 pool, five $100 winners, deadline 29 November 2026.
